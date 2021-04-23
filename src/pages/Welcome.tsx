@@ -1,12 +1,12 @@
 import React from "react";
 import {
   Text,
+  View,
   Image,
-  TouchableOpacity,
+  Dimensions,
   StyleSheet,
   SafeAreaView,
-  Dimensions,
-  View,
+  TouchableOpacity,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/core";
@@ -56,21 +56,21 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 20,
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 28,
+    marginTop: 38,
+    lineHeight: 34,
     fontWeight: "bold",
     textAlign: "center",
     color: colors.heading,
-    marginTop: 38,
     fontFamily: fonts.heading,
-    lineHeight: 34,
   },
   subtitle: {
-    textAlign: "center",
     fontSize: 18,
+    textAlign: "center",
     paddingHorizontal: 20,
     color: colors.heading,
     fontFamily: fonts.text,
@@ -79,16 +79,16 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").width * 0.7,
   },
   button: {
-    backgroundColor: colors.green,
-    justifyContent: "center",
-    alignItems: "center",
+    width: 56,
+    height: 56,
     borderRadius: 16,
     marginBottom: 10,
-    height: 56,
-    width: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.green,
   },
   buttonIcon: {
-    color: colors.white,
     fontSize: 32,
+    color: colors.white,
   },
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import {
-  StyleSheet,
   Text,
+  StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
 } from "react-native";
@@ -22,11 +22,11 @@ export default function Button({ title, ...props }: ButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.green,
     height: 56,
     borderRadius: 16,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.green,
   },
   text: {
     fontSize: 16,

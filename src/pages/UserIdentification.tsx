@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import {
-  SafeAreaView,
-  StyleSheet,
   Text,
-  TextInput,
   View,
+  Alert,
+  Keyboard,
+  Platform,
+  TextInput,
+  StyleSheet,
+  SafeAreaView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Platform,
-  Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
@@ -36,8 +38,13 @@ export default function UserIdentification() {
     setName(value);
   }
 
-  function handleSubmit() {
-    if (isFilled) navigation.navigate("Confirmation");
+  async function handleSubmit() {
+    if (!name)
+      return Alert.alert("Preencha o nome de usuário para prosseguir!");
+
+    await AsyncStorage.setItem("@plantmanager:user", name);
+
+    navigation.navigate("Confirmation");
   }
 
   return (
@@ -94,8 +101,8 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
     paddingHorizontal: 54,
+    justifyContent: "center",
   },
   header: {
     alignItems: "center",
@@ -104,22 +111,22 @@ const styles = StyleSheet.create({
     fontSize: 44,
   },
   input: {
-    borderBottomWidth: 1,
-    borderColor: colors.gray,
-    color: colors.heading,
-    width: "100%",
+    padding: 10,
     fontSize: 18,
     marginTop: 50,
-    padding: 10,
+    width: "100%",
     textAlign: "center",
+    borderBottomWidth: 1,
+    color: colors.heading,
+    borderColor: colors.gray,
   },
   title: {
     fontSize: 24,
+    marginTop: 20,
     lineHeight: 32,
     textAlign: "center",
     color: colors.heading,
     fontFamily: fonts.heading,
-    marginTop: 20,
   },
   footer: {
     width: "100%",

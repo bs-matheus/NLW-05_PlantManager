@@ -1,10 +1,17 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import Button from "../components/Button";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
 export default function Confirmation() {
+  const navigation = useNavigation();
+
+  function handleMoveOn() {
+    navigation.navigate("PlantSelect");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -17,7 +24,7 @@ export default function Confirmation() {
         </Text>
 
         <View style={styles.footer}>
-          <Button title="Começar" />
+          <Button title="Começar" onPress={handleMoveOn} />
         </View>
       </View>
     </SafeAreaView>
@@ -32,32 +39,32 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
     padding: 30,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   emoji: {
     fontSize: 78,
   },
   title: {
     fontSize: 22,
-    fontFamily: fonts.heading,
-    color: colors.heading,
-    textAlign: "center",
-    lineHeight: 38,
     marginTop: 15,
+    lineHeight: 38,
+    textAlign: "center",
+    color: colors.heading,
+    fontFamily: fonts.heading,
   },
   subtitle: {
-    fontFamily: fonts.heading,
-    color: colors.heading,
-    textAlign: "center",
     fontSize: 17,
     paddingVertical: 10,
+    textAlign: "center",
+    color: colors.heading,
+    fontFamily: fonts.heading,
   },
   footer: {
     width: "100%",
-    paddingHorizontal: 50,
     marginTop: 20,
+    paddingHorizontal: 50,
   },
 });
