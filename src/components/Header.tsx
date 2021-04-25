@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Text, View, Image, StyleSheet } from "react-native";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import userImg from "../assets/matheus.png";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
-export default function Header() {
-  const [userName, setUserName] = useState<string>();
+interface HeaderProps {
+  title: string;
+  subtitle?: string;
+}
 
-  useEffect(() => {
-    async function loadStorageUserName() {
-      const user = await AsyncStorage.getItem("@plantmanager:user");
-      setUserName(user || "");
-    }
-
-    loadStorageUserName();
-  }, []);
-
+export default function Header({ title, subtitle }: HeaderProps) {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.greeting}>Olá,</Text>
-        <Text style={styles.userName}>{userName}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
       </View>
 
       <Image source={userImg} style={styles.image} />
@@ -44,12 +37,12 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 40,
   },
-  greeting: {
+  title: {
     fontSize: 32,
     color: colors.heading,
     fontFamily: fonts.text,
   },
-  userName: {
+  subtitle: {
     fontSize: 32,
     lineHeight: 40,
     color: colors.heading,

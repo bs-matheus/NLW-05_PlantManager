@@ -6,11 +6,14 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import { useNavigation } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import EnviromentButton from "../components/EnviromentButton";
+import { PlantProps } from "../libs/storage";
+import api from "../services/api";
 import Header from "../components/Header";
 import Load from "../components/Load";
 import PrimaryPlantCard from "../components/PrimaryPlantCard";
-import api from "../services/api";
 import colors from "../styles/colors";
 import fonts from "../styles/fonts";
 
@@ -19,20 +22,8 @@ interface EnviromentProps {
   title: string;
 }
 
-interface PlantProps {
-  id: number;
-  name: string;
-  about: string;
-  water_tips: string;
-  photo: string;
-  environments: [string];
-  frequency: {
-    times: number;
-    repeat_every: string;
-  };
-}
-
 export default function PlantSelect() {
+  const [userName, setUserName] = useState<string>();
   const [enviroments, setEnviroments] = useState<EnviromentProps[]>([]);
   const [plants, setPlants] = useState<PlantProps[]>([]);
   const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
@@ -40,6 +31,8 @@ export default function PlantSelect() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  const navigation = useNavigation();
 
   function handleEnviromentSelection(enviroment: string) {
     setSelectedEnviroment(enviroment);
@@ -51,6 +44,10 @@ export default function PlantSelect() {
     );
 
     setFilteredPlants(filtered);
+  }
+
+  function handlePlantSelection(plant: PlantProps) {
+    navigation.navigate("PlantSave", { plant });
   }
 
   async function fetchPlants() {
@@ -81,6 +78,15 @@ export default function PlantSelect() {
   }
 
   useEffect(() => {
+    async function loadStorageUserName() {
+      const user = await AsyncStorage.getItem("@plantmanager:user");
+      setUserName(user || "");
+    }
+
+    loadStorageUserName();
+  }, []);
+
+  useEffect(() => {
     async function fetchEnviroment() {
       const { data } = await api.get("plants_environments");
       setEnviroments([
@@ -102,7 +108,7 @@ export default function PlantSelect() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Header />
+        <Header title="Olá," subtitle={userName} />
 
         <Text style={styles.title}>Em qual ambiente</Text>
         <Text style={styles.subtitle}>você quer colocar sua planta?</Text>
@@ -129,7 +135,12 @@ export default function PlantSelect() {
         <FlatList
           data={filteredPlants}
           keyExtractor={(item) => String(item.id)}
-          renderItem={({ item }) => <PrimaryPlantCard data={item} />}
+          renderItem={({ item }) => (
+            <PrimaryPlantCard
+              data={item}
+              onPress={() => handlePlantSelection(item)}
+            />
+          )}
           numColumns={2}
           showsVerticalScrollIndicator={false}
           onEndReachedThreshold={0.1}
@@ -148,7 +159,7 @@ export default function PlantSelect() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderColor: colors.background,
+    backgroundColor: colors.background,
   },
   header: {
     paddingHorizontal: 30,

@@ -8,9 +8,9 @@ export default function Load() {
   return (
     <View style={styles.container}>
       <LottieView
-        source={loadingAnimation}
-        autoPlay
         loop
+        autoPlay
+        source={loadingAnimation}
         style={styles.animation}
       />
     </View>
